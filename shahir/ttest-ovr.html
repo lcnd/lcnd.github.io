@@ -189,8 +189,8 @@
        var positions = new Float32Array(segs[clstr] * 3 * 2);
        var colors = new Float32Array(segs[clstr] * 4 * 2);
 
+       var rgb = [60/255, 130/255, 255/255];
        for (var i=0; i<segs[clstr]; i++) {
-	 var rgb = [60/255, 130/255, 255/255];
 	 var vi = clI[clstr][2*i];
 	 positions[i*6+0] = vrt[vi*3];
 	 positions[i*6+1] = vrt[vi*3+1];
