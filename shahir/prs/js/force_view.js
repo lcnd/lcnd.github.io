@@ -1,5 +1,5 @@
-var width = 300,
-    height = 300,
+var width = 285,
+    height = 285,
     fill = d3.scale.category20();
 
 // mouse event vars

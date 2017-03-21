@@ -11,28 +11,12 @@
     <meta name="author" content="Bartek Szopka" />
     
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:regular,semibold,italic,italicsemibold|PT+Sans:400,700,400italic,700italic|PT+Serif:400,700,400italic,700italic" rel="stylesheet" />
-    <!--
-         
-         Impress.js doesn't depend on any external stylesheets. It adds all of the styles it needs for the
-         presentation to work.
-         
-         This style below contains styles only for demo presentation. Browse it to see how impress.js
-         classes are used to style presentation steps, or how to apply fallback styles, but I don't want
-         you to use them directly in your presentation.
-         
-         Be creative, build your own. We don't really want all impress.js presentations to look the same,
-         do we?
-         
-         When creating your own presentation get rid of this file. Start from scratch, it's fun!
-         
-       -->
-
     <link rel="stylesheet" href="./css//bokeh-0.12.2.min.css" type="text/css" />
     <link href="css/impress-demo.css" rel="stylesheet" />
     <link href="css/impress-slide-num.css" rel="stylesheet" />
-    
     <link rel="shortcut icon" href="favicon.png" />
     <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+    
     <script src="./lib/three.min.js"></script>
     <script type="text/javascript" src="./lib/dat.gui.min.js"></script>
     <script type="text/javascript" src="./lib/OrbitControls.js"></script>
@@ -44,77 +28,18 @@
     </script>
     <script src="http://d3js.org/d3.v2.min.js"></script>
     <script type="text/javascript" src="https://cdn.pydata.org/bokeh/release/bokeh-0.12.2.min.js"></script>
+    
   </head>
 
-  <!--
-       
-       Body element is used by impress.js to set some useful class names, that will allow you to detect
-       the support and state of the presentation in CSS or other scripts.
-       
-       First very useful class name is `impress-not-supported`. This class means, that browser doesn't
-       support features required by impress.js, so you should apply some fallback styles in your CSS.
-       It's not necessary to add it manually on this element. If the script detects that browser is not
-       good enough it will add this class, but keeping it in HTML means that users without JavaScript
-       will also get fallback styles.
-       
-       When impress.js script detects that browser supports all required features, this class name will
-       be removed.
-       
-       The class name on body element also depends on currently active presentation step. More details about
-       it can be found later, when `hint` element is being described.
-       
-     -->
   <body class="impress-not-supported">
 
-    <!--
-	 For example this fallback message is only visible when there is `impress-not-supported` class on body.
-       -->
     <div class="fallback-message">
       <p>Your browser <b>doesn't support the features required</b> by impress.js, so you are presented with a simplified version of this presentation.</p>
       <p>For the best experience please use the latest <b>Chrome</b>, <b>Safari</b> or <b>Firefox</b> browser.</p>
     </div>
 
-    <!--
-	 
-	 Now that's the core element used by impress.js.
-	 
-	 That's the wrapper for your presentation steps. In this element all the impress.js magic happens.
-	 It doesn't have to be a `<div>`. Only `id` is important here as that's how the script find it.
-	 
-	 You probably won't need it now, but there are some configuration options that can be set on this element.
-	 
-	 To change the duration of the transition between slides use `data-transition-duration="2000"` giving it
-	 a number of ms. It defaults to 1000 (1s).
-	 
-	 You can also control the perspective with `data-perspective="500"` giving it a number of pixels.
-	 It defaults to 1000. You can set it to 0 if you don't want any 3D effects.
-	 If you are willing to change this value make sure you understand how CSS perspective works:
-	 https://developer.mozilla.org/en/CSS/perspective
-	 
-	 But as I said, you won't need it for now, so don't worry - there are some simple but interesting things
-	 right around the corner of this tag ;)
-	 
-       -->
-
     <div id="impress">
 
-      <!--
-           
-           Here is where interesting thing start to happen.
-           
-           Each step of the presentation should be an element inside the `#impress` with a class name
-           of `step`. These step elements are positioned, rotated and scaled by impress.js, and
-           the 'camera' shows them on each step of the presentation.
-           
-           Positioning information is passed through data attributes.
-           
-           In the example below we only specify x and y position of the step element with `data-x="-1000"`
-           and `data-y="-1500"` attributes. This means that **the center** of the element (yes, the center)
-           will be positioned in point x = -1000px and y = -1500px of the presentation 'canvas'.
-           
-           It will not be rotated or scaled.
-           
-	 -->
       <div id="zero" class="step slide" data-x="-2250" data-y="-1500" data-z="0" data-rotate-y="0" style="background-color: rgba(100,100,100,.2)">
 	<h3><strong style="color: #037eb7; opacity: .8">Intrinsic Brain Networks are Organized by Frequency Relationships</strong></h3>
 	<br><br>
@@ -133,131 +58,82 @@
 	  <p style="font-size: 20px; text-align:center; font-weight: bold; opacity: .95; color: #037eb7;">Department of Neurological Surgery</p><br>
 	  <p style="font-size: 16px; text-align:center; color: #505050; font-weight: bold; opacity: .8">March 21, 2017</p>
 	</div>
-	<!-- <div style="position: absolute; color: #505050; font-weight: bold; font-size:400px; left:6500px; top: 0px; text-shadow: 0 80px 80px rgba(0, 0, 0, .8);">Summary:</div> -->
       </div>
 
       <div id="" class="step slide" data-x="-1000" data-y="-1500">
-	<h3 class="hD"><strong>The role of synchrony in neural coding I</strong></h3>
+	<h3 class="hD"><strong>Intro</strong></h3>
 	<div class="cT">	
 	  <br><br><br>
 	  <ul class="ulS">
-	    <li>Neurons are dynamic entities capable of engaging in multi-modal oscillatory behavior.</li><br>
-	    <li>This osicllatory actvity is realized over large-scale (sub-) networks of the brain.</li><br>
-	    <li>The synchronous activity of these cortical subnetworks is suggested to provide the bridge from single-neuronal activity to basic cognitive computations.</li><br>
-	    <li>The cross-talk and competition of these (dynamic) subnetworks could aid the progression of higher cognitive tasks and formation of cohesive percepts.</li>
+	    <li>Oscillatory synchrony is thought to reflect the integration of activity across large and small scale brain networks.</li><br>
+	    <li>Aberrant synchrony has been observed in a number of neuropsychiatric disorders.</li><br>
+	    <li>The frequency spectrum has been divided into broad frequency bands based on ad hoc observation in particular regions and networks and cognitive tasks.</li><br>
+	    <li>It remains unknown whether these bands represent an intrinsic organizational property of the human connectome.</li>
 	  </ul>
 	</div>
       </div>
 
       <div id="" class="step slide" data-x="250" data-y="-1500">
-	<h3 class="hD"><strong>The role of synchrony in neural coding II</strong></h3>
+	<h3 class="hD"><strong>Questions</strong></h3>
 	<div class="cT">	
 	  <br><br><br>
 	  <ul class="ulS">
-	    <li>Ocillaotry coupling of neuronal populations is often times examined withing a single frequency band/window.</li><br>
-	    <li>Most studies rely on canonical frequency bands or certain sub-windows of that better serve the proposed idea.</li><br>
-	    <li>The emergence of canonical bands in the literature correlates with their task-specific manifestations.</li><br>
-	    <li>There is no apparent reason why two different cognitive tasks would utilize the frequency spectrum for their function in an identical manner.</li>
+	    <li>Are there robust frequency bands/clusters in the intrinsic/resting-state connectome?.</li><br>
+	    <li>How do these bands compare to the ad hoc canonical frequency bands?.</li><br>
+	    <li>Are frequency bands associated with consistent connectivity profiles across individuals?.</li><br>
+	    <li>What are the band-specific networks?.</li>
 	  </ul>
 	</div>
       </div>
 
-      <!-- <div id="" class="step slide" data-x="1500" data-y="-1500">
-	   <h3 class="hD"><strong>The role of synchrony in neural coding III</strong></h3>
-	   <div class="cT">	
-	   <br><br>
-	   <ul class="ulS">
-	   <li>one</li>
-	   <li>two</li>
-	   <li>three</li>
-	   <li>four</li>
-	   <li>five</li>
-	   </ul>
-	   </div>
-	   </div> -->
-
       <div id="" class="step slide" data-x="-1000" data-y="-500">
-	<h3 class="hD"><strong>Let the data decide: parcellation</strong></h3>
+	<h3 class="hD"><strong>Are there robust frequency bands/clusters in the intrinsic/resting-state connectome?</strong></h3>
 	<div class="cT">
 	  <br><br><br>
 	  <ul class="ulS">
-	    <li>We take a data-driven path to functional parcellation of the frequency spectrum in resting-state brain networks.</li>
-	    <li>We cluster the spectrum based on the similairty of frequency graphs and let the algorithm decide (if and) were to delimit a certain band.</li>
-	    <li>This systematic compression can be applied to various cognitive tasks and mental states, in healthy and disordered brains.</li>
-	    <li>In resting state data, the emergent frequency bands agree with lower canonical bands and point to further structure beyond alpha.</li>
-	    <li>We have a fondness of for fixed parameters.</li>
+	    <li>It is unknown if frequency bands emerge from brain data, particularly at the network level.</li><br>
+	    <li>We answer this question by examining all-to-all resting-state connectivity patterns (intrinsic connectome) at each frequency from <span class="nB">1</span> to <span class="nB">50</span> Hz.</li><br>
+	    <li>Unsupervised learning at the group level is then used to determine if there are consistent frequency clusters across subjects.</li>
 	  </ul>
 	</div>
       </div>
 
-      <div id="" class="step slide" data-x="250" data-y="-500">
-	<h3 class="hD"><strong>Let the data decide: backward compatibility</strong></h3>
+      <div id="" class="step slide" data-x="-1000" data-y="500">
+	<h3 class="hD"><strong>Connectome Methods</strong></h3>
 	<div class="cT">
 	  <br><br><br><br>
 	  <ul class="ulS">
-	    <li>The emergence of frequency bands as a natural consequence of clustering functional connectivity networks suggests that frequency relationships are tied to the remaining network structure in data.</li><br>
-	    <li>The relationship between frequency bands and network topology is highly consistent accross subjects.</li><br>
-	    <!-- <li>Our finiding suggest the existence of 7 convex frequency bands in resting state that happen to agree with lower canonical bands while pointing to further structure in beta and gamma region.</li><br> -->
-	    <li>Representative networks of these diffrent bands can be leveraged in assessment of clinical populations in terms of their distance from healthy subject netowrks.</li>
+	    <li>35 healthy subjects</li><br>
+	    <li>10 minutes of visually-fixated resting-state MEG</li><br>
+	    <li>Source localize the resting-state signal</li><br>
+	    <li>Calculate PLV for each frequency from 1-50 Hz between each pair source points (&nbsp;<span class="nB">$50\times 5124\times 5124$</span>&nbsp;)</li><br>
+	    <li>Compare to PLV calculated from empty room data to remove cross-talk artifact</li>
 	  </ul>
 	</div>
       </div>
       
-      <div id="" class="step slide" data-x="-1000" data-y="500">
-	<h3 class="hD"><strong>Data: acquisiton</strong></h3>
-	<div class="cT">
-	  <br><br>
-	  <ul class="ulS">
-	    <li><span class="nB">10</span> minutes of visually-fixated resting-state MEG recordings <span class="nI">of</span></li><br>
-	    <li><span class="nB">35</span> typically developing subjects</li><br>
-	    <li>for each integer frequency from <span class="nB">1</span> to <span class="nB">50</span> Hz</li><br>
-	    <li>PLVs between <span class="nB">5124</span> brain regions were used to form all-to-all connectivity maps</li><br>
-	    <li>artifact removal</li>
-	  </ul><br>
-	  <span class="nI">End result:</span><br>
-	  <span style="margin-left:20px">For each subject, and for each frequency from <span class="nB">1</span> to <span class="nB">50</span> Hz, we have a network of <span class="nB">5124</span> brain regions (nodes).</span>
-	</div>
-      </div>
-
-      <div id="" class="step slide" data-x="250" data-y="500">
-	<h3 class="hD"><strong>Data: normalization</strong></h3>
-	<div class="cT">
-	  <br><br><span class="nI">Motivation:</span><br>
-	  <span style="margin-left:20px">To remove the inverse frequency effect from subsequent analysis.</span><br>
-	  <br><span class="nI">Per subject:</span><br>
-	  <ul class="ulS">
-	    <li>compute the CDF for each frequency graph (over edge weights);</li>
-	    <li>average the above CDFs;</li>
-	    <li>for each frequency graph, re-map the edge weights according to this common CDF.</li>
-	  </ul>
-	  <br>
-	  Any potential structure in the frequency band should now be free from density bias and only due to the remaining network structure.
-	</div>
-      </div>
-
       <div id="" class="step slide" data-x="-1000" data-y="1500">
-	<div id="chart1" class="cT" style="background-color:transparent; border: 3px dashed rgba(80, 80, 80, .3); border-radius: 20px; position:absolute; left:570px; top:195px">
+	<div id="chart1" class="cT" style="background-color:transparent; border: 3px dashed rgba(80, 80, 80, .3); border-radius: 20px; position:absolute; left:585px; top:285px">
 	</div>
 	<script src="./js/force_view.js"></script>
 	
-	<h3 class="hD"><strong>Graph distance</strong></h3>
+	<h3 class="hD"><strong>Unsupervised learning methods (normalization and graph similarity)</strong></h3>
 	<div class="cT">
-	  <br>Our problem is a special case of graph similarity analysis in that the nodes are identical across graphs (<span class="nB">1</span> to <span class="nB">50</span> Hz, per subject).<br><br>
-	  <span class="nI">We employ three measures:</span><br><br>
-	  <ul class="ulS">
+	  <br>First normalize the graphs remove global frequency effects (e.g. $1/f$) by equating the CDFs at each frequency.<br>
+	  <span class="nI" style="font-size: 22px; padding-left: 18px; display:block">This removes any density bias and leaves only network structure for calculating similarity.</span><br>
+	  <span class="nI" style="font-size: 24px;">We employ three graph similarity measures:</span><br><br>
+	  <ul class="ulS" style="margin-top: -20px">
 	    <li>$\mathbf{L}_1$ distance</li>
 	    <span class="sbN">Average absolute edgewise difference</span><br><br>
 	    <li>Degree distance</li>
 	    <span class="sbN">One minus the weighted degree correlation</span><br><br>
 	    <li>Local clustering coefficient (LCC) $\cdots$ distance</li>
 	    <span class="sbN">One minus the LCC correlation between binarized graphs</span><br>
-	    <span class="sbN" style="font-size:16px">This measure is parametric (later, we fix it).</span><br><br>
-	    <span class="cP" style="display:block; transform: rotate(-90deg); right: -7px; top: 455px;"><a href="http://bl.ocks.org/benzguo/4370043" alt="" style="text-decoration: none; font-size:14px; background-color: transparent; font-variant: small-caps; text-shadow: none;">ben guo</a></span>
+	    <span class="cP" style="display:block; transform: rotate(-90deg); right: -7px; top: 515px;"><a href="http://bl.ocks.org/benzguo/4370043" alt="" style="text-decoration: none; font-size:14px; background-color: transparent; font-variant: small-caps; text-shadow: none;">ben guo</a></span>
 	  </ul>
 	</div>
       </div>
 
-      <!-- <div id="" class="step slide" data-x="250" data-y="1500" style="position:relative"> -->
       <div id="" class="step slide" data-x="250" data-y="1500" style="border:none; box-shadow:none; background-color: transparent;">
 	<img class="brdr" src="./img/one_a.png" width="300px" height="310px" style="position:absolute; left:-40px; top: -40px; border-radius: 10px; padding: 5px; opacity: .8;"> </img>
 	<span class="cP" style="left:105px; top:280px; color: rgba(16,170,204,.8);">$\mathbf{L}_\mathbf{1}$</span>
@@ -273,62 +149,51 @@
 
       <div id="" class="step slide" data-x="1500" data-y="1500" data-z="0" data-rotate-y="0" style="border:none; box-shadow:none; background-color: transparent;">
 	<img class="brdr" src="./img/stk/00.png" width="600px" height="620px" style="position:absolute; left:145px; top:45px; opacity: .8; padding: 10px; border-radius: 10px;"> </img>
-	<!-- <span class="cP" style="left:150px; top:265px">$\textbf{L}_1$</span> -->
       </div>
 
       <div id="" class="step slide" data-x="2000" data-y="1500" data-z="-500" data-rotate-y="0" style="border:none; box-shadow:none; background-color: transparent;">
 	<img class="brdr" src="./img/stk/02.png" width="600px" height="620px" style="position:absolute; left:145px; top:45px; opacity: .8; padding: 10px; border-radius: 10px;"> </img>	
-	<!-- <span class="cP" style="left:150px; top:265px">$\textbf{L}_1$</span> -->
       </div>
 
       <div id="" class="step slide" data-x="2500" data-y="1500" data-z="-1000" data-rotate-y="0" style="border:none; box-shadow:none; background-color: transparent;">
 	<img class="brdr" src="./img/stk/06.png" width="600px" height="620px" style="position:absolute; left:145px; top:45px; opacity: .8; padding: 10px; border-radius: 10px;"> </img>	
-	<!-- <span class="cP" style="left:150px; top:265px">$\textbf{L}_1$</span> -->
       </div>
 
       <div id="" class="step slide" data-x="3000" data-y="1500" data-z="-1500" data-rotate-y="0" style="border:none; box-shadow:none; background-color: transparent;">
 	<img class="brdr" src="./img/stk/07.png" width="600px" height="620px" style="position:absolute; left:145px; top:45px; opacity: .8; padding: 10px; border-radius: 10px;"> </img>	
-	<!-- <span class="cP" style="left:150px; top:265px">$\textbf{L}_1$</span> -->
       </div>
 
       <div id="" class="step slide" data-x="3500" data-y="1500" data-z="-2000" data-rotate-y="0" style="border:none; box-shadow:none; background-color: transparent;">
 	<img class="brdr" src="./img/stk/08.png" width="600px" height="620px" style="position:absolute; left:145px; top:45px; opacity: .8; padding: 10px; border-radius: 10px;"> </img>	
-	<!-- <span class="cP" style="left:150px; top:265px">$\textbf{L}_1$</span> -->
       </div>
 
       <div id="" class="step slide" data-x="4000" data-y="1500" data-z="-2500" data-rotate-y="0" style="border:none; box-shadow:none; background-color: transparent;">
 	<img class="brdr" src="./img/stk/13.png" width="600px" height="620px" style="position:absolute; left:145px; top:45px; opacity: .8; padding: 10px; border-radius: 10px;"> </img>	
-	<!-- <span class="cP" style="left:150px; top:265px">$\textbf{L}_1$</span> -->
       </div>
 
       <div id="" class="step slide" data-x="4500" data-y="1500" data-z="-3000" data-rotate-y="0" style="border:none; box-shadow:none; background-color: transparent;">
 	<img class="brdr" src="./img/stk/14.png" width="600px" height="620px" style="position:absolute; left:145px; top:45px; opacity: .8; padding: 10px; border-radius: 10px;"> </img>	
-	<!-- <span class="cP" style="left:150px; top:265px">$\textbf{L}_1$</span> -->
       </div>
 
       <div id="" class="step slide" data-x="5000" data-y="1500" data-z="-3500" data-rotate-y="0" style="border:none; box-shadow:none; background-color: transparent;">
 	<img class="brdr" src="./img/stk/26.png" width="600px" height="620px" style="position:absolute; left:145px; top:45px; opacity: .8; padding: 10px; border-radius: 10px;"> </img>	
-	<!-- <span class="cP" style="left:150px; top:265px">$\textbf{L}_1$</span> -->
       </div>
 
       <div id="" class="step slide" data-x="5500" data-y="1500" data-z="-4000" data-rotate-y="0" style="border:none; box-shadow:none; background-color: transparent;">
 	<img class="brdr" src="./img/stk/28.png" width="600px" height="620px" style="position:absolute; left:145px; top:45px; opacity: .8; padding: 10px; border-radius: 10px;"> </img>	
-	<!-- <span class="cP" style="left:150px; top:265px">$\textbf{L}_1$</span> -->
       </div>
 
       <div id="" class="step slide" data-x="6000" data-y="1500" data-z="-4500" data-rotate-y="0" style="border:none; box-shadow:none; background-color: transparent;">
 	<img class="brdr" src="./img/stk/31.png" width="600px" height="620px" style="position:absolute; left:145px; top:45px; opacity: .8; padding: 10px; border-radius: 10px;"> </img>	
-	<!-- <span class="cP" style="left:150px; top:265px">$\textbf{L}_1$</span> -->
       </div>
 
       <div id="" class="step slide" data-x="-1000" data-y="2500">
-	<h3 class="hD"><strong>Clustering: method</strong></h3>
+	<h3 class="hD"><strong>Unsupervised learning methods (clustering)</strong></h3>
 	<div class="cT">
 	  <br><br><div class="nB" style="text-align:center"><span>Clusters correspond to frequency bands.</span></div><br>
 	  <span class="ceM">Spectral clustering</span> is our method of choice.<br><br>
 	  <ul class="ulS">
 	    <li>The Ng-Jordan-Weiss interpretation of spectral clustering is adopted.</li><br>
-	    <!-- <span class="sbN" style="font-size:14px;">A.Y. Ng, M.I. Jordan and Y. Weiss, <em>On spectral clustering: analysis and an algorithm</em>, Advances in Neural Information Processing Systems (2001)</span> -->
 	    <li>Spectral clustering works with the notion of similarities.</li>
 	    <span class="sbN">We normalize the distance matrices to the $\mathbf{[0,1]}$ interval and subtract their off-diagonal entries from unity to arrive at a similarity matrix.</span><br><br>
 	    <li>Instabilities</li>
@@ -375,6 +240,21 @@
 	</div>
       </div>
       
+      <div id="" class="step slide" data-x="-3750" data-y="3500" data-z ="-1000" data-rotate-y="-90">
+	<h3 class="hD"><strong>Questions</strong></h3>
+	<div class="cT">
+	  <br><br><br>
+	  <ul class="ulS">
+	    <li>Are there robust frequency bands/clusters in the intrinsic/resting-state connectome?</li>
+            <span class="sbN">Yes, <span class="nB">5-7</span> bands emerge from the connectome.</span><br>
+	    <li>How do these bands compare to the ad hoc canonical frequency bands?</li>
+            <span class="sbN">Reasonably well, with clear beta split.</span><br>
+	    <li>Are frequency bands associated with consistent connectivity profiles across individuals?</li><br>
+	    <li>What are the band-specific networks?</li>
+	  </ul>
+	</div>
+      </div>
+
       <div id="" class="step slide" data-x="-1000" data-y="3500">
 	<h3 class="hD"><strong>Prediction: feature extraction</strong></h3>
 	<div class="cT">
@@ -385,153 +265,102 @@
 	    <span class="sbN">This is our first representative PC for all subjects: we keep it.</span><br><br>
 	    <li>subtract the above vector from the remaining PCs of all subjects and subsequently renormalize them;</li><br>
 	    <li>repteat the above with the remaining (transformed) PCs.</li>
-	    <!-- <span class="sbN">.</span><br> -->
-	  </ul>
-	</div>
-    </div>
-
-    <div id="" class="step slide" data-x="250" data-y="3500">
-      <h3 class="hD"><strong>Prediction: classification I</strong></h3>
-      <div style="position:absolute; left:120px; top:60px; opacity: .8;">
-	<div class="bk-root">
-          <div class="plotdiv" id="9f177cc2-d298-4eaa-8e5d-f3e664a40206"></div>
-	</div>
-	<script src="./js/bk_0.js"></script>
-      </div>
-      <span style="font-size:22px; font-weight:bold">~80% classification accuracy<br>&nbsp;&nbsp;&nbsp;w/ SVM<span class="sB" style="color: rgba(3,126,183,.7);">RBF</span></span>
-    </div>
-
-    <div id="" class="step slide" data-x="1500" data-y="3500">
-      <h3 class="hD"><strong>Prediction: classification II</strong></h3>
-      <div style="position:absolute; left:120px; top:60px; opacity: .8;">
-	<div class="bk-root">
-          <div class="plotdiv" id="0da11dc5-fc31-4161-8e91-da0c1798e8f8"></div>
-	</div>
-	<script src="./js/bk_1.js"></script>
-      </div>
-      <span style="font-size:22px; font-weight:bold">~75% classification accuracy<br>&nbsp;&nbsp;&nbsp;w/ SVM<span class="sB" style="color: rgba(3,126,183,.7);">Lin</span></span>
-    </div>
-    
-    <div id="" class="step slide" data-x="-1000" data-y="4500">
-      <h3 class="hD"><strong>Representation: motivation</strong></h3>
-      <div class="cT">
-	<br>To identify the network structure that separates a frequency band from others.<br><br>
-	<ul class="ulS">
-	  <li>It allows us to construct (better ?) classifiers that are informed by graph distance measures.</li><br>
-	  <li>The classification accuracy of these learners can be used to assess the proximity of <span class="ceM">any</span> given network to different frequency bands.</li><br>
-	  <li>Assesement of brain disorders in terms of their network distance in different frequency bands to healthy populations.</li><br>
-	  <li>To locate brain regions that are responsible for deviation from healthy networks.</li>
-	</ul>
-      </div>
-    </div>
-
-    <div id="" class="step slide" data-x="250" data-y="4500">
-      <h3 class="hD"><strong>Representation: method</strong></h3>
-      <div class="cT">
-	<br><br>Our current method is univariate.<br><br><br>
-	<span class="cP" style="left:130px; top:180px; font-size:22px; color: #808080">Room for improvement <span style="vertical-align:super;">&#x21b5;</span></span>
-	<ul class="ulS">
-	  <li>For each edge,</li><br>
-	  <li>and for each class/band,</li><br>
-	  <li>we perform a $t$-test with a one-vs-rest decision function;</li><br>
-	  <li>the resluting $p-$value is thresholded at a signifcance level, normalized and assigned to that edge, in that band, as its weight.</li>
-	  <!-- <span class="sbN">.</span><br> -->
-	</ul>
-      </div>
-    </div>
-
-    <div class="step slide" data-x="1500" data-y="4500">
-      <h3 class="hD"><strong>Representation: outcome</strong></h3>
-      <!-- <div style="position:absolute; left:120px; top:60px"> -->
-      <div style="width: 800px; height: 500px; position: absolute; left: 42px; top: 150px; border: 5px solid #606060; border-radius: 5px;">
-	<div id="container" style="width: inherit; z-index: 0; opacity: .9;">
-	  <div id="dat-gui-holder" style="position: absolute; top: 0em; right: 0em; z-index: 1;"></div>
-	</div>
-      </div>
-    </div>
-
-    <div id="" class="step slide" data-x="-1000" data-y="5500">
-      <h3 class="hD"><strong>Summary</strong></h3>
-      <div class="cT">
-	<br><br><br>
-	<ul class="ulS">
-	  <li>The similarities in frequency graphs are only deriven by network structure.</li><br>
-	  <li>The emrging band spefic network structure is highly consistent accross subjects.</li><br>
-	  <li>High classification accuracies obtained in predicting band labels support our claim.</li><br>
-	  <li>This consistency suggest the notion of representative networks for frequency bands.</li>
-	</ul>
-      </div>
-    </div>
-    
-      <!--
-      <div id="" class="step slide" data-x="250" data-y="-500">
-	<h3 class="hD"><strong>Preprocessing</strong></h3>
-	<div class="cT">
-	  <br>Data collection<br><br>
-	  <ul class="ulS">
-	    <li>one</li>
-	    <li>two</li>
-	    <li>three</li>
-	    <li>four</li>
-	    <li>five</li>
 	  </ul>
 	</div>
       </div>
-      -->
       
-    <div id="overview" class="step" data-x="3000" data-rotate-y="0" data-y="1500" data-scale="10">  
-    </div>
+      <div id="" class="step slide" data-x="250" data-y="3500">
+	<h3 class="hD"><strong>Prediction: classification I</strong></h3>
+	<div style="position:absolute; left:120px; top:60px; opacity: .8;">
+	  <div class="bk-root">
+            <div class="plotdiv" id="9f177cc2-d298-4eaa-8e5d-f3e664a40206"></div>
+	  </div>
+	  <script src="./js/bk_0.js"></script>
+	</div>
+	<span style="font-size:22px; font-weight:bold">~80% classification accuracy<br>&nbsp;&nbsp;&nbsp;w/ SVM<span class="sB" style="color: rgba(3,126,183,.7);">RBF</span></span>
+      </div>
+
+      <div id="" class="step slide" data-x="1500" data-y="3500">
+	<h3 class="hD"><strong>Prediction: classification II</strong></h3>
+	<div style="position:absolute; left:120px; top:60px; opacity: .8;">
+	  <div class="bk-root">
+            <div class="plotdiv" id="0da11dc5-fc31-4161-8e91-da0c1798e8f8"></div>
+	  </div>
+	  <script src="./js/bk_1.js"></script>
+	</div>
+	<span style="font-size:22px; font-weight:bold">~75% classification accuracy<br>&nbsp;&nbsp;&nbsp;w/ SVM<span class="sB" style="color: rgba(3,126,183,.7);">Lin</span></span>
+      </div>
+
+      <div id="" class="step slide" data-x="-3750" data-y="4500" data-z ="-1000" data-rotate-y="-90">
+	<h3 class="hD"><strong>Questions</strong></h3>
+	<div class="cT">
+	  <br><br><br>
+	  <ul class="ulS">
+	    <li>Are there robust frequency bands/clusters in the intrinsic/resting-state connectome?</li>
+            <span class="sbN">Yes, <span class="nB">5-7</span> bands emerge from the connectome.</span><br>
+	    <li>How do these bands compare to the ad hoc canonical frequency bands?</li>
+            <span class="sbN">Reasonably well, with clear beta split.</span><br>
+	    <li>Are frequency bands associated with consistent connectivity profiles across individuals?</li>
+	    <span class="sbN">Very consistent. Given an all-to-all connectivity matrix, can classify<br>with <span class="nB">> 75%</span> accuracy what band it is associated with.</span><br>
+	    <li>What are the band-specific networks?</li>
+	  </ul>
+	</div>
+      </div>
+      
+      <div id="" class="step slide" data-x="-1000" data-y="4500">
+	<h3 class="hD"><strong>What are the band-specific networks?</strong></h3>
+	<div class="cT">
+	  <br><br>What network structure separates frequency band networks from one another?<br>
+	  <br>Our current method is univariate.<br><br>
+	  <span class="cP" style="left:130px; top:280px; font-size:22px; color: #808080">Room for improvement <span style="vertical-align:super;">&#x21b5;</span></span>
+	  <ul class="ulS">
+	    <li>For each edge,</li><br>
+	    <li>and for each class/band,</li><br>
+	    <li>we perform a $t$-test with a one-vs-rest decision function;</li><br>
+	    <li>the resluting $p$-value is thresholded at a signifcance level, normalized and assigned to that edge, in that band, as its weight.</li>
+	  </ul>
+	</div>
+      </div>
+
+      <div class="step slide" data-x="250" data-y="4500">
+	<h3 class="hD"><strong>Outcome</strong></h3>
+	<div style="width: 800px; height: 500px; position: absolute; left: 42px; top: 150px; border: 5px solid #606060; border-radius: 5px;">
+	  <div id="container" style="width: inherit; z-index: 0; opacity: .9;">
+	    <div id="dat-gui-holder" style="position: absolute; top: 0em; right: 0em; z-index: 1;"></div>
+	  </div>
+	</div>
+      </div>
+
+      <div id="" class="step slide" data-x="-1000" data-y="5500">
+	<h3 class="hD"><strong>Discussion</strong></h3>
+	<div class="cT" style="font-size: 24px">
+	  <br><br>To identify the network structure that separates a frequency band from others.<br><br>
+	  <ul class="ulS">
+	    <li>Frequency bands are associated with distinct network structure, with similar structure within bands and distinctions between bands.</li><br>
+	    <li>Bands are similar to the canonical frequency bands from the literature.</li><br>
+	    <li>Network structure in each band is highly consistent across individuals.</li><br>
+	    <li>Hubs for each frequency are reasonable given what is believed to be the generators/critical nodes for frequency-specific oscillations.</li>
+	  </ul>
+	</div>
+      </div>
+
+      <div id="" class="step slide" data-x="250" data-y="5500">
+	<h3 class="hD"><strong>Future directions</strong></h3>
+	<div class="cT">
+	  <br><br><br><br>
+	  <ul class="ulS">
+	    <li>May be able to define subject-specific bands using classification approach.</li><br><br>
+	    <li>Graph comparison and network templates allow for multimodal comparisons and fusion.</li><br><br>
+	    <li>High classification accuracy and robust pipeline make applying these methods to clinical populations (schizophrenia) for identifying pathology a natural next step.</li>
+	  </ul>
+	</div>
+      </div>
+      
+      <div id="overview" class="step" data-x="3000" data-rotate-y="0" data-y="1500" data-scale="10">  
+      </div>
 
     </div>
 
-    <!--
-	 
-	 Hint is not related to impress.js in any way.
-	 
-	 But it can show you how to use impress.js features in creative way.
-	 
-	 When the presentation step is shown (selected) its element gets the class of "active" and the body element
-	 gets the class based on active step id `impress-on-ID` (where ID is the step's id)... It may not be
-	 so clear because of all these "ids" in previous sentence, so for example when the first step (the one with
-	 the id of `bored`) is active, body element gets a class of `impress-on-bored`.
-	 
-	 This class is used by this hint below. Check CSS file to see how it's shown with delayed CSS animation when
-	 the first step of presentation is visible for a couple of seconds.
-	 
-	 ...
-	 
-	 And when it comes to this piece of JavaScript below ... kids, don't do this at home ;)
-	 It's just a quick and dirty workaround to get different hint text for touch devices.
-	 In a real world it should be at least placed in separate JS file ... and the touch content should be
-	 probably just hidden somewhere in HTML - not hard-coded in the script.
-	 
-	 Just sayin' ;)
-	 
-       -->
-    <!-- <div class="hint">
-	 <p>Use a spacebar or arrow keys to navigate</p>
-	 </div> -->
-    <script>
-     if ("ontouchstart" in document.documentElement) { 
-       document.querySelector(".hint").innerHTML = "<p>Tap on the left or right to navigate</p>";
-     }
-    </script>
-
-    <!--
-	 
-	 Last, but not least.
-	 
-	 To make all described above really work, you need to include impress.js in the page.
-	 I strongly encourage to minify it first.
-	 
-	 In here I just include full source of the script to make it more readable.
-	 
-	 You also need to call a `impress().init()` function to initialize impress.js presentation.
-	 And you should do it in the end of your document. Not only because it's a good practice, but also
-	 because it should be done when the whole document is ready.
-	 Of course you can wrap it in any kind of "DOM ready" event, but I was too lazy to do so ;)
-	 
-       -->
     <script id="vertexShader" type="x-shader/x-vertex">
 
      precision mediump float;
@@ -735,7 +564,6 @@
 	 this.rtn = orbitControls.autoRotate;
        };
 
-       // this is the GUI part you'd wanna remove soon
        // var gui = new dat.GUI();
        // dat.GUI.toggleHide();
        var gui = new dat.GUI({autoPlace: false});
@@ -888,92 +716,14 @@
     </script>
     
     <script src="js/impress.js"></script>
+    
     <script src="js/impress-slide-num.js"></script>
-    <!-- <script>
-	 var a = document.querySelectorAll('[data-x]');
-	 for (var i=0; i<a.length; i++) {
-	 var b = Number(a[i].getAttribute('data-x'));
-	 a[i].setAttribute('data-x',String(b+1250*2));
-	 b = Number(a[i].getAttribute('data-x'));
-	 // document.write(b);
-	 }
-	 </script> -->
+    
     <script>
      var obj = impress();
      obj.init();
      initSlideNo(obj);
     </script>
 
-    <!--
-	 
-	 The `impress()` function also gives you access to the API that controls the presentation.
-	 
-	 Just store the result of the call:
-	 
-	 var api = impress();
-	 
-	 and you will get three functions you can call:
-	 
-	 `api.init()` - initializes the presentation,
-	 `api.next()` - moves to next step of the presentation,
-	 `api.prev()` - moves to previous step of the presentation,
-	 `api.goto( stepIndex | stepElementId | stepElement, [duration] )` - moves the presentation to the step given by its index number
-	 id or the DOM element; second parameter can be used to define duration of the transition in ms,
-	 but it's optional - if not provided default transition duration for the presentation will be used.
-	 
-	 You can also simply call `impress()` again to get the API, so `impress().next()` is also allowed.
-	 Don't worry, it wont initialize the presentation again.
-	 
-	 For some example uses of this API check the last part of the source of impress.js where the API
-	 is used in event handlers.
-	 
-       -->
-
   </body>
 </html>
-
-<!--
-     
-     Now you know more or less everything you need to build your first impress.js presentation, but before
-     you start...
-     
-     Oh, you've already cloned the code from GitHub?
-     
-     You have it open in text editor?
-     
-     Stop right there!
-     
-     That's not how you create awesome presentations. This is only a code. Implementation of the idea that
-     first needs to grow in your mind.
-     
-     So if you want to build great presentation take a pencil and piece of paper. And turn off the computer.
-     
-     Sketch, draw and write. Brainstorm your ideas on a paper. Try to build a mind-map of what you'd like
-     to present. It will get you closer and closer to the layout you'll build later with impress.js.
-     
-     Get back to the code only when you have your presentation ready on a paper. It doesn't make sense to do
-     it earlier, because you'll only waste your time fighting with positioning of useless points.
-     
-     If you think I'm crazy, please put your hands on a book called "Presentation Zen". It's all about 
-     creating awesome and engaging presentations.
-     
-     Think about it. 'Cause impress.js may not help you, if you have nothing interesting to say.
-     
-   -->
-
-<!--
-     
-     Are you still reading this?
-     
-     For real?
-     
-     I'm impressed! Feel free to let me know that you got that far (I'm @bartaz on Twitter), 'cause I'd like
-     to congratulate you personally :)
-     
-     But you don't have to do it now. Take my advice and take some time off. Make yourself a cup of coffee, tea,
-     or anything you like to drink. And raise a glass for me ;)
-     
-     Cheers!
-     
-   -->
-
