@@ -33,7 +33,9 @@ vis.append('svg:rect')
 // init force layout
 var force = d3.layout.force()
     .size([width, height])
-    .nodes([{}]) // initialize with a single node
+.links([{source: 0, target: 1},{source: 0, target: 2},{source: 0, target: 3},{source: 0, target: 4},{source: 0, target: 5},{source: 0, target: 6},{source: 0, target: 7},{source: 7, target: 8},{source: 7, target: 9},{source: 7, target: 10},{source: 7, target: 11},{source: 8, target: 9},{source: 9, target: 10},{source: 10, target: 11},{source: 11, target: 8}])
+.nodes([{},{},{},{},{},{},{},{},{},{},{},{}])
+    // .nodes([{}]) // initialize with a single node
     .linkDistance(50)
     .charge(-200)
     .on("tick", tick);
