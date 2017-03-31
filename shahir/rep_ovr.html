@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>t-test: ovr</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    
+    <style>
+     
+     body {
+       color: #cccccc;
+       font-family:Monospace;
+       font-size:13px;
+       text-align:center;
+
+       background-color: #000000;
+       margin: 0px;
+       overflow: hidden;
+     }
+
+     #info {
+       position: absolute;
+       top: 0px; width: 100%;
+       padding: 5px;
+     }
+
+     a {
+       color: #0080ff;
+     }
+
+    </style>
+  </head>
+  
+  <body>
+    
+    <div id="container"></div>
+
+    <script src="./lib/three.min.js"></script>
+    <script type="text/javascript" src="./lib/dat.gui.min.js"></script>
+    <script type="text/javascript" src="./lib/OrbitControls.js"></script>
+
+    <script id="vertexShader" type="x-shader/x-vertex">
+
+     precision mediump float;
+     precision mediump int;
+     attribute vec4 color;
+     varying vec4 vColor;
+
+     void main() {
+       vColor = color;
+       gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+     }
+
+    </script>
+
+    <script id="fragmentShader" type="x-shader/x-fragment">
+
+     precision mediump float;
+     precision mediump int;
+     varying vec4 vColor;
+
+     void main() {
+       vec4 color = vec4(vColor);
+       gl_FragColor = color;
+     }
+
+    </script>
+    
+    <script>
+
+     var oReq = new XMLHttpRequest();
+     oReq.open("GET", "./rep_ovr.ba", true);
+     oReq.responseType = "arraybuffer";
+     oReq.onload = function (oEvent,byteArray) {
+       var arrayBuffer = oReq.response;
+       if (arrayBuffer) {
+	 var all =  new Float32Array(arrayBuffer);
+	 var sZ = all[0];
+	 var i = sZ * 3 + 1; // all[i] === #clusters
+	 var vrt = all.subarray(1,i);
+	 var cL = all[i];
+	 i += 1; // all[i] === #edges in the first cluster
+	 var clI = new Array(cL);
+	 var clEW = new Array(cL);
+	 var clVW = new Array(cL);
+	 var pos;
+	 for (var j=0; j<cL; j++) {
+	   pos = i + 1 + all[i] * 2;
+	   clI[j] = all.subarray(i+1,pos);
+	   i = pos + all[i];
+	   clEW[j] = all.subarray(pos,i);
+	   clVW[j] = all.subarray(i,i+sZ);
+	   i += sZ;
+	 }
+	 init(sZ,vrt,cL,clI,clEW,clVW);
+       }
+     };
+
+     oReq.send(null);
+
+     function init(sZ,vrt,cL,clI,clEW,clVW) {
+       
+       var container;
+       var camera, scene, renderer;
+       var mesh;
+       container = document.getElementById( 'container' );
+
+       var clock = new THREE.Clock();
+       scene = new THREE.Scene();
+       camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, .1, 100);
+       camera.position.x = 6;
+       camera.position.y = -2.0625;
+       camera.position.z = 8;
+       camera.lookAt(new THREE.Vector3(0,0,0));
+
+       var orbitControls = new THREE.OrbitControls(camera);
+       orbitControls.autoRotate = true;
+       orbitControls.autoRotateSpeed = .25;
+       orbitControls.userrotateSpeed = 1.0;
+       orbitControls.userPan = false;
+       orbitControls.enableDamping = true;
+       orbitControls.dampingFactor = 0.25;
+       orbitControls.minDistance = .5;
+       orbitControls.maxDistance = 50;
+
+       var clstr = 0;
+       var opaV = .9;
+       var opaE = .25;
+       var rdns = .85;
+       var segs_ = 500;
+       var wdth = 2;
+
+       var genTex = function () {
+	 var canvas = document.createElement("canvas");
+	 canvas.width = 32;
+	 canvas.height = 32;
+	 var ctx = canvas.getContext("2d");
+	 var gradient = ctx.createRadialGradient(16,16,16,16,16,0);
+	 gradient.addColorStop(0,"black");
+	 gradient.addColorStop(1,"white");
+	 ctx.fillStyle = gradient;
+	 ctx.fillRect(0,0,32,32);
+         var texture = new THREE.Texture(canvas);
+         texture.needsUpdate = true;
+         return texture;
+       };
+
+       var geom = new THREE.Geometry();
+       var vmaterial = new THREE.PointsMaterial({
+	 size: .65,
+	 vertexColors: true,
+	 map: genTex(),
+	 blending: THREE.AdditiveBlending,
+	 depthWrite: false,
+	 transparent: true,
+	 opacity: opaV
+       });
+
+       var num, den;
+       for (var i=0; i<sZ; i++) {
+	 geom.vertices.push(new THREE.Vector3(vrt[i*3],vrt[i*3+1],vrt[i*3+2]));
+	 num = (1-clVW[clstr][i])*(1-rdns);
+	 den = clVW[clstr][i]*(rdns) + num;
+	 if (den > 0)
+	   num /= den;
+	 geom.colors[i] = new THREE.Color().setRGB(1, num, num);
+       }
+       
+       vgroup = new THREE.Points(geom, vmaterial);
+       vgroup.rotation.x = - Math.PI / 2;
+       vgroup.rotation.z = - Math.PI / 3;
+       vgroup.sortParticles = true;
+       scene.add(vgroup);
+                     
+       var segs = new Array(cL);
+       for (var i=0; i<cL; i++)
+	 segs[i] = Math.min(segs_,clI[i].length/2);;
+
+       var geometry = new THREE.BufferGeometry();
+       var material = new THREE.ShaderMaterial({
+	 vertexShader: document.getElementById('vertexShader').textContent,
+	 fragmentShader: document.getElementById('fragmentShader').textContent,
+	 transparent: true,
+	 blending: THREE.AdditiveBlending, 
+	 depthTest: false,
+	 linewidth: wdth
+       });
+
+       var positions = new Float32Array(segs[clstr] * 3 * 2);
+       var colors = new Float32Array(segs[clstr] * 4 * 2);
+
+       for (var i=0; i<segs[clstr]; i++) {
+	 var rgb = [60/255, 130/255, 255/255];
+	 var vi = clI[clstr][2*i];
+	 positions[i*6+0] = vrt[vi*3];
+	 positions[i*6+1] = vrt[vi*3+1];
+	 positions[i*6+2] = vrt[vi*3+2];
+	 var vi = clI[clstr][2*i+1];
+	 positions[i*6+3] = vrt[vi*3];
+	 positions[i*6+4] = vrt[vi*3+1];
+	 positions[i*6+5] = vrt[vi*3+2];
+
+	 colors[i*8] = rgb[0];
+	 colors[i*8+1] = rgb[1];
+	 colors[i*8+2] = rgb[2];
+	 colors[i*8+3] = clEW[clstr][i] * opaE;
+	 colors[i*8+4] = rgb[0];
+	 colors[i*8+5] = rgb[1];
+	 colors[i*8+6] = rgb[2];
+	 colors[i*8+7] = clEW[clstr][i] * opaE;
+       }
+
+       geometry.addAttribute('position', new THREE.BufferAttribute(positions, 3));
+       geometry.addAttribute('color', new THREE.BufferAttribute(colors, 4, true));
+       geometry.computeBoundingSphere();
+
+       var mesh = new THREE.LineSegments(geometry, material);
+       mesh.rotation.x = - Math.PI / 2;
+       mesh.rotation.z = - Math.PI / 3;
+       scene.add(mesh);
+
+       renderer = new THREE.WebGLRenderer({antialias: false});
+       renderer.setClearColor(0x101010);
+       renderer.setPixelRatio(window.devicePixelRatio);
+       renderer.setSize(window.innerWidth, window.innerHeight);
+       renderer.gammaInput = true;
+       renderer.gammaOutput = true;
+
+       container.appendChild(renderer.domElement);
+
+       window.addEventListener('resize', onWindowResize, false);
+
+       render()
+       
+       var controls = new function () {
+	 this.clstr = clstr + 1;
+	 this.edgs = segs[clstr];
+         this.vopa = opaV;
+	 this.vcol = rdns;
+	 this.eopa = opaE;
+	 this.wdth = wdth;
+	 this.rtn = orbitControls.autoRotate;
+       };
+
+       
+       var gui = new dat.GUI();
+       // dat.GUI.toggleHide();
+       gui.add(controls, 'clstr', 1, cL).step(1).name("Cluster #").onChange(clstrC);
+       gui.add(controls, 'edgs', 0, clI[clstr].length/2).step(1).name("#Edges").onChange(edgsC);
+       gui.add(controls, 'vopa', 0, 1).name("Vertex Opacity").onChange(vopaC);
+       gui.add(controls, 'vcol', 0, 1).name("Vertex Color").onChange(vcolC);
+       gui.add(controls, 'eopa', 0, 1).name("Edge Opacity").onChange(eopaC);
+       gui.add(controls, 'wdth', 1, 4).step(1).name("Edge Width").onChange(wdthC);
+       gui.add(controls, 'rtn').name("Auto-Rotate").onChange(rtnC);
+
+       function rtnC() {
+	 orbitControls.autoRotate = controls.rtn;
+       }
+       
+       function wdthC() {
+	 material.linewidth = controls.wdth;
+       }
+       
+       function vcolC() {
+	 rdns = controls.vcol;
+	 for (var i=0; i<sZ; i++) {
+	   num = (1-clVW[clstr][i])*(1-rdns);
+	   den = clVW[clstr][i]*(rdns) + num;
+	   if (den > 0)
+	     num /= den;
+	   geom.colors[i] = new THREE.Color().setRGB(1, num, num);
+	 }
+	 geom.colorsNeedUpdate = true;
+       }
+       
+       function eopaC() {
+	 opaE = controls.eopa;
+	 for (var i=0; i<segs[clstr]; i++) {
+	   colors[i*8+3] = clEW[clstr][i] * opaE;
+	   colors[i*8+7] = clEW[clstr][i] * opaE;
+	 }
+	 geometry.attributes.color.needsUpdate = true;
+       }
+       
+       function vopaC() {
+	 vmaterial.opacity = controls.vopa;
+       }
+       
+       function edgsC() {
+	 segs[clstr] = controls.edgs;
+	 positions = new Float32Array(segs[clstr] * 3 * 2);
+	 colors = new Float32Array(segs[clstr] * 4 * 2);
+	 for (var i=0; i<segs[clstr]; i++) {
+	   var vi = clI[clstr][2*i];
+	   positions[i*6+0] = vrt[vi*3];
+	   positions[i*6+1] = vrt[vi*3+1];
+	   positions[i*6+2] = vrt[vi*3+2];
+	   var vi = clI[clstr][2*i+1];
+	   positions[i*6+3] = vrt[vi*3];
+	   positions[i*6+4] = vrt[vi*3+1];
+	   positions[i*6+5] = vrt[vi*3+2];
+
+	   colors[i*8] = rgb[0];
+	   colors[i*8+1] = rgb[1];
+	   colors[i*8+2] = rgb[2];
+	   colors[i*8+3] = clEW[clstr][i] * opaE;
+	   colors[i*8+4] = rgb[0];
+	   colors[i*8+5] = rgb[1];
+	   colors[i*8+6] = rgb[2];
+	   colors[i*8+7] = clEW[clstr][i] * opaE;
+	 }
+	 geometry.position = null;
+	 geometry.color = null;
+	 geometry.addAttribute('position', new THREE.BufferAttribute(positions, 3));
+	 geometry.addAttribute('color', new THREE.BufferAttribute(colors, 4, true));
+	 geometry.attributes.position.needsUpdate = true;
+	 geometry.attributes.color.needsUpdate = true;
+       }
+       
+       function clstrC() {
+	 clstr = controls.clstr-1;
+	 controls.edgs = segs[clstr];
+	 gui.destroy();
+	 gui = new dat.GUI();
+	 gui.add(controls, 'clstr', 1, cL).step(1).name("Cluster #").onChange(clstrC);
+	 gui.add(controls, 'edgs', 0, clI[clstr].length/2).step(1).name("#Edges").onChange(edgsC);
+	 gui.add(controls, 'vopa', 0, 1).name("Vertex Opacity").onChange(vopaC);
+	 gui.add(controls, 'vcol', 0, 1).name("Vertex Color").onChange(vcolC);
+	 gui.add(controls, 'eopa', 0, 1).name("Edge Opacity").onChange(eopaC);
+	 gui.add(controls, 'wdth', 1, 4).step(1).name("Edge Width").onChange(wdthC);
+	 gui.add(controls, 'rtn').name("Auto-Rotate").onChange(rtnC);
+
+	 positions = new Float32Array(segs[clstr] * 3 * 2);
+	 colors = new Float32Array(segs[clstr] * 4 * 2);
+	 for (var i=0; i<segs[clstr]; i++) {
+	   var vi = clI[clstr][2*i];
+	   positions[i*6+0] = vrt[vi*3];
+	   positions[i*6+1] = vrt[vi*3+1];
+	   positions[i*6+2] = vrt[vi*3+2];
+	   var vi = clI[clstr][2*i+1];
+	   positions[i*6+3] = vrt[vi*3];
+	   positions[i*6+4] = vrt[vi*3+1];
+	   positions[i*6+5] = vrt[vi*3+2];
+
+	   colors[i*8] = rgb[0];
+	   colors[i*8+1] = rgb[1];
+	   colors[i*8+2] = rgb[2];
+	   colors[i*8+3] = clEW[clstr][i] * opaE;
+	   colors[i*8+4] = rgb[0];
+	   colors[i*8+5] = rgb[1];
+	   colors[i*8+6] = rgb[2];
+	   colors[i*8+7] = clEW[clstr][i] * opaE;
+	 }
+	 geometry.position = null;
+	 geometry.color = null;
+	 geometry.addAttribute( 'position', new THREE.BufferAttribute(positions, 3));
+	 geometry.addAttribute( 'color', new THREE.BufferAttribute(colors, 4, true) );
+	 geometry.attributes.position.needsUpdate = true;
+	 geometry.attributes.color.needsUpdate = true;
+
+	 for (var i=0; i<sZ; i++) {
+	   num = (1-clVW[clstr][i])*(1-rdns);
+	   den = clVW[clstr][i]*(rdns) + num;
+	   if (den > 0)
+	     num /= den;
+	   geom.colors[i] = new THREE.Color().setRGB(1, num, num);
+	 }
+	 geom.colorsNeedUpdate = true;
+	 
+       }
+
+       function render() {
+	 var delta = clock.getDelta();
+	 orbitControls.update(delta);
+	 requestAnimationFrame(render);
+	 renderer.render(scene, camera)
+       }
+
+       function onWindowResize() {
+	 camera.aspect = window.innerWidth / window.innerHeight;
+	 camera.updateProjectionMatrix();
+	 renderer.setSize( window.innerWidth, window.innerHeight );
+       }
+       
+     }
+
+    </script>
+
+  </body>
+</html>
+
