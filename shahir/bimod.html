@@ -101,7 +101,7 @@
 	   comm[i][j] = true;
 	 }
        }
-       comm[cL-1][clIN[cL-1]] = false; // this particular community of this particular cluster is not an actual community, so it won't be exposed.
+       comm[cL-1][clIN[cL-1]-1] = false; // this particular community of this particular cluster is not an actual community, so it won't be exposed.
 
        var opaV = .9;
 
