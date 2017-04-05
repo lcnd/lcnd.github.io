@@ -204,7 +204,7 @@
 	 gui.add(controls, 'comm_'+i.toString()).name((i+1).toString()).onChange(commC);
        gui.add(controls, 'rtn').name("Auto-Rotate").onChange(rtnC);
        gui.add(controls, 'wfrm').name("Wireframe/Glass").onChange(wfrmC);
-       gui.add(controls, 'glso', 0, 1).name("W/G Opacity").onChange(glsoC);
+       gui.add(controls, 'glso', 0, .2).name("W/G Opacity").onChange(glsoC);
 
        function commC() {
 	 for (var i=0; i<clIN[clstr]; i++) {
@@ -247,6 +247,8 @@
 	   }
 	 }
 	 gui.add(controls, 'rtn').name("Auto-Rotate").onChange(rtnC);
+	 gui.add(controls, 'wfrm').name("Wireframe/Glass").onChange(wfrmC);
+	 gui.add(controls, 'glso', 0, .2).name("W/G Opacity").onChange(glsoC);
 	 for (var i=0; i<sZ; i++) {
 	   geom.colors[i] = new THREE.Color(comm[clstr][clI[clstr][i]] == true? clr[clIN[clstr]-2][clI[clstr][i]] : 0x282828);
 	 }
