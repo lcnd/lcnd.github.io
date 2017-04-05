@@ -38,6 +38,7 @@
     <script src="./lib/three.min.js"></script>
     <script type="text/javascript" src="./lib/dat.gui.min.js"></script>
     <script type="text/javascript" src="./lib/OrbitControls.js"></script>
+    <script type="text/javascript" src="./lib/PLYLoader.js"></script>
     
     <script>
 
@@ -140,8 +141,6 @@
 	 opacity: opaV
        });
 
-       console.log(comm);
-       var num, den;
        for (var i=0; i<sZ; i++) {
 	 geom.vertices.push(new THREE.Vector3(vrt[i*3],vrt[i*3+1],vrt[i*3+2]));
 	 geom.colors[i] = new THREE.Color(comm[clstr][clI[clstr][i]] == true? clr[clIN[clstr]-2][clI[clstr][i]] : 0x282828);
@@ -152,7 +151,24 @@
        vgroup.rotation.z = - Math.PI / 3;
        vgroup.sortParticles = true;
        scene.add(vgroup);
-                     
+
+       var glso = .075;
+       var wfrm = true;
+       var gmaterial = new THREE.MeshBasicMaterial({color:0x8e8e8e, shading:THREE.SmoothShading, transparent:true, opacity:glso, visible:true, wireframe:true, blending:THREE.AdditiveBlending});
+       
+       var loader = new THREE.PLYLoader();
+       loader.load('./lrb.ply', function (geometry) {
+	 
+	 geometry.computeVertexNormals();
+
+	 var plymesh = new THREE.Mesh(geometry, gmaterial);
+
+	 plymesh.rotation.x = - Math.PI / 2;
+	 plymesh.rotation.z = - Math.PI / 3;
+	 scene.add(plymesh);
+
+       });
+
        renderer = new THREE.WebGLRenderer({antialias: false});
        renderer.setClearColor(0x101010);
        renderer.setPixelRatio(window.devicePixelRatio);
@@ -176,7 +192,8 @@
 	     eval("this.comm_"+i.toString()+" = comm["+clstr.toString()+"]["+i.toString()+"];");
 	   }
 	 }
-	 console.log(i,this.comm_5);
+	 this.glso = glso;
+	 this.wfrm = wfrm;
        };
 
        var gui = new dat.GUI();
@@ -186,6 +203,8 @@
        for (var i=0; i<clIN[clstr]; i++)
 	 gui.add(controls, 'comm_'+i.toString()).name((i+1).toString()).onChange(commC);
        gui.add(controls, 'rtn').name("Auto-Rotate").onChange(rtnC);
+       gui.add(controls, 'wfrm').name("Wireframe/Glass").onChange(wfrmC);
+       gui.add(controls, 'glso', 0, 1).name("W/G Opacity").onChange(glsoC);
 
        function commC() {
 	 for (var i=0; i<clIN[clstr]; i++) {
@@ -195,6 +214,16 @@
 	   geom.colors[i] = new THREE.Color(comm[clstr][clI[clstr][i]] == true? clr[clIN[clstr]-2][clI[clstr][i]] : 0x282828);
 	 }
 	 geom.colorsNeedUpdate = true;
+       }
+
+       function glsoC() {
+	 glso = controls.glso;
+	 gmaterial.opacity = glso;
+       }
+
+       function wfrmC() {
+	 wfrm = controls.wfrm;
+	 gmaterial.wireframe = wfrm;
        }
        
        function rtnC() {
