@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Modularity: Binazrized</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    
+    <style>
+     
+     body {
+       color: #cccccc;
+       font-family:Monospace;
+       font-size:13px;
+       text-align:center;
+
+       background-color: #000000;
+       margin: 0px;
+       overflow: hidden;
+     }
+
+     #info {
+       position: absolute;
+       top: 0px; width: 100%;
+       padding: 5px;
+     }
+
+     a {
+       color: #0080ff;
+     }
+
+    </style>
+  </head>
+  
+  <body>
+    
+    <div id="container"></div>
+
+    <script src="./lib/three.min.js"></script>
+    <script type="text/javascript" src="./lib/dat.gui.min.js"></script>
+    <script type="text/javascript" src="./lib/OrbitControls.js"></script>
+    <script type="text/javascript" src="./lib/PLYLoader.js"></script>
+    
+    <script>
+
+     var oReq = new XMLHttpRequest();
+     oReq.open("GET", "./ttestAvg_modkng.ba", true);
+     oReq.responseType = "arraybuffer";
+     oReq.onload = function (oEvent,byteArray) {
+       var arrayBuffer = oReq.response;
+       if (arrayBuffer) {
+	 var all =  new Float32Array(arrayBuffer);
+	 var sZ = all[0];
+	 var i = sZ * 3 + 1; // all[i] === #clusters
+	 var vrt = all.subarray(1,i);
+	 var cL = all[i];
+	 var clI = new Array(cL);
+	 var clIN = new Array(cL);
+	 i += 1;
+	 for (var j=0; j<cL; j++) {
+	   clIN[j] = all[i];
+	   clI[j] = all.subarray(i+(1),i+(sZ+1));
+	   i += sZ + 1;
+	 }
+	 init(sZ,vrt,cL,clI,clIN);
+       }
+     };
+
+     oReq.send(null);
+
+     function init(sZ,vrt,cL,clI,clIN) {
+       
+       var container;
+       var camera, scene, renderer;
+       var mesh;
+       container = document.getElementById( 'container' );
+
+       var clock = new THREE.Clock();
+       scene = new THREE.Scene();
+       camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, .1, 100);
+       camera.position.x = 6;
+       camera.position.y = -2.0625;
+       camera.position.z = 8;
+       camera.lookAt(new THREE.Vector3(0,0,0));
+
+       var orbitControls = new THREE.OrbitControls(camera);
+       orbitControls.autoRotate = true;
+       orbitControls.autoRotateSpeed = .25;
+       orbitControls.userrotateSpeed = 1.0;
+       orbitControls.userPan = false;
+       orbitControls.enableDamping = true;
+       orbitControls.dampingFactor = 0.25;
+       orbitControls.minDistance = .5;
+       orbitControls.maxDistance = 50;
+
+       var clstr = 0;
+       var mxcomm = 0;
+       var comm = new Array(cL);
+       for (var i=0; i<cL; i++) {
+	 comm[i] = new Array(clIN[i]);
+	 mxcomm = mxcomm < clIN[i] ? clIN[i] : mxcomm;
+	 for (var j=0; j<clIN[i]; j++) {
+	   comm[i][j] = true;
+	 }
+       }
+       // comm[cL-1][clIN[cL-1]-1] = false; // this particular community of this particular cluster is not an actual community, so it won't be exposed.
+
+       var opaV = .9;
+
+       var clr = [
+	 [0x9e0142,0x5e4fa2],
+	 [0x9e0142,0x006837,0x5e4fa2],
+	 [0x9e0142,0xfdae61,0xabdda4,0x5e4fa2],
+	 [0x9e0142,0xf46d43,0xffffbf,0x66c2a5,0x5e4fa2],
+	 [0x9e0142,0xf46d43,0xfee08b,0xe6f598,0x66c2a5,0x5e4fa2]
+	 // [0x9e0142,0xd53e4f,0xf46d43,0xfdae61,0xfee08b,0xffffbf,0xe6f598,0xabdda4,0x66c2a5,0x3288bd,0x5e4fa2]
+       ];
+
+       var genTex = function () {
+	 var canvas = document.createElement("canvas");
+	 canvas.width = 32;
+	 canvas.height = 32;
+	 var ctx = canvas.getContext("2d");
+	 var gradient = ctx.createRadialGradient(16,16,16,16,16,0);
+	 gradient.addColorStop(0,"black");
+	 gradient.addColorStop(1,"white");
+	 ctx.fillStyle = gradient;
+	 ctx.fillRect(0,0,32,32);
+         var texture = new THREE.Texture(canvas);
+         texture.needsUpdate = true;
+         return texture;
+       };
+
+       var geom = new THREE.Geometry();
+       var vmaterial = new THREE.PointsMaterial({
+	 size: .65,
+	 vertexColors: true,
+	 map: genTex(),
+	 blending: THREE.AdditiveBlending,
+	 depthWrite: false,
+	 transparent: true,
+	 opacity: opaV
+       });
+
+       for (var i=0; i<sZ; i++) {
+	 geom.vertices.push(new THREE.Vector3(vrt[i*3],vrt[i*3+1],vrt[i*3+2]));
+	 geom.colors[i] = new THREE.Color(comm[clstr][clI[clstr][i]] == true? clr[clIN[clstr]-2][clI[clstr][i]] : 0x282828);
+       }
+       
+       vgroup = new THREE.Points(geom, vmaterial);
+       vgroup.rotation.x = - Math.PI / 2;
+       vgroup.rotation.z = - Math.PI / 3;
+       vgroup.sortParticles = true;
+       scene.add(vgroup);
+
+       var glso = .075;
+       var wfrm = true;
+       var gmaterial = new THREE.MeshBasicMaterial({color:0x8e8e8e, shading:THREE.SmoothShading, transparent:true, opacity:glso, visible:true, wireframe:true, blending:THREE.AdditiveBlending});
+       
+       var loader = new THREE.PLYLoader();
+       loader.load('./lrb.ply', function (geometry) {
+	 
+	 geometry.computeVertexNormals();
+
+	 var plymesh = new THREE.Mesh(geometry, gmaterial);
+
+	 plymesh.rotation.x = - Math.PI / 2;
+	 plymesh.rotation.z = - Math.PI / 3;
+	 scene.add(plymesh);
+
+       });
+
+       renderer = new THREE.WebGLRenderer({antialias: false});
+       renderer.setClearColor(0x101010);
+       renderer.setPixelRatio(window.devicePixelRatio);
+       renderer.setSize(window.innerWidth, window.innerHeight);
+       renderer.gammaInput = true;
+       renderer.gammaOutput = true;
+
+       container.appendChild(renderer.domElement);
+
+       window.addEventListener('resize', onWindowResize, false);
+
+       render()
+       
+       var controls = new function () {
+	 this.clstr = clstr + 1;
+         this.vopa = opaV;
+	 this.rtn = orbitControls.autoRotate;
+	 for (var i=0; i<mxcomm; i++) {
+	   eval("this.comm_"+i.toString()+" = true;");
+	   if (i<clIN[clstr]) {
+	     eval("this.comm_"+i.toString()+" = comm["+clstr.toString()+"]["+i.toString()+"];");
+	   }
+	 }
+	 this.glso = glso;
+	 this.wfrm = wfrm;
+       };
+
+       var gui = new dat.GUI();
+       // dat.GUI.toggleHide();
+       gui.add(controls, 'clstr', 1, cL).step(1).name("Cluster #").onChange(clstrC);
+       gui.add(controls, 'vopa', 0, 1).name("Vertex Opacity").onChange(vopaC);
+       for (var i=0; i<clIN[clstr]; i++)
+	 gui.add(controls, 'comm_'+i.toString()).name((i+1).toString()).onChange(commC);
+       gui.add(controls, 'rtn').name("Auto-Rotate").onChange(rtnC);
+       gui.add(controls, 'wfrm').name("Wireframe/Glass").onChange(wfrmC);
+       gui.add(controls, 'glso', 0, .2).name("W/G Opacity").onChange(glsoC);
+
+       function commC() {
+	 for (var i=0; i<clIN[clstr]; i++) {
+	   eval("comm["+clstr.toString()+"]["+i.toString()+"] = controls.comm_"+i.toString()+";"); 
+	 }
+	 for (var i=0; i<sZ; i++) {
+	   geom.colors[i] = new THREE.Color(comm[clstr][clI[clstr][i]] == true? clr[clIN[clstr]-2][clI[clstr][i]] : 0x282828);
+	 }
+	 geom.colorsNeedUpdate = true;
+       }
+
+       function glsoC() {
+	 glso = controls.glso;
+	 gmaterial.opacity = glso;
+       }
+
+       function wfrmC() {
+	 wfrm = controls.wfrm;
+	 gmaterial.wireframe = wfrm;
+       }
+       
+       function rtnC() {
+	 orbitControls.autoRotate = controls.rtn;
+       }
+       
+       function vopaC() {
+	 vmaterial.opacity = controls.vopa;
+       }
+              
+       function clstrC() {
+	 clstr = controls.clstr-1;
+	 gui.destroy();
+	 gui = new dat.GUI();
+	 gui.add(controls, 'clstr', 1, cL).step(1).name("Cluster #").onChange(clstrC);
+	 gui.add(controls, 'vopa', 0, 1).name("Vertex Opacity").onChange(vopaC);
+	 for (var i=0; i<clIN[clstr]; i++) {
+	   eval("controls.comm_"+i.toString()+" = comm["+clstr.toString()+"]["+i.toString()+"];");
+	   /* if (clstr < (cL-1) || i<(clIN[clstr]-1)) { // this condition blocks the last community of the last cluster since it's not actually a community; also see an earlier related comment.
+ 	      gui.add(controls, 'comm_'+i.toString()).name((i+1).toString()).onChange(commC);
+	      }*/
+	   gui.add(controls, 'comm_'+i.toString()).name((i+1).toString()).onChange(commC);
+	 }
+	 gui.add(controls, 'rtn').name("Auto-Rotate").onChange(rtnC);
+	 gui.add(controls, 'wfrm').name("Wireframe/Glass").onChange(wfrmC);
+	 gui.add(controls, 'glso', 0, .2).name("W/G Opacity").onChange(glsoC);
+	 for (var i=0; i<sZ; i++) {
+	   geom.colors[i] = new THREE.Color(comm[clstr][clI[clstr][i]] == true? clr[clIN[clstr]-2][clI[clstr][i]] : 0x282828);
+	 }
+	 geom.colorsNeedUpdate = true;
+       }
+
+       function render() {
+	 var delta = clock.getDelta();
+	 orbitControls.update(delta);
+	 requestAnimationFrame(render);
+	 renderer.render(scene, camera)
+       }
+
+       function onWindowResize() {
+	 camera.aspect = window.innerWidth / window.innerHeight;
+	 camera.updateProjectionMatrix();
+	 renderer.setSize( window.innerWidth, window.innerHeight );
+       }
+       
+     }
+
+    </script>
+
+  </body>
+</html>
